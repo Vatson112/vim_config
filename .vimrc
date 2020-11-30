@@ -1,12 +1,21 @@
+" Config tabs
 set autoindent
 set expandtab
 set shiftwidth=4
 set smarttab
 set tabstop=4
+" Config backups
 set backup
+set backupdir=~/.vim/backup
+if filewritable("~/.vim") && ! filewritable("~/.vim/backup")
+  silent execute '!umask 002; mkdir ~/.vim/backup'
+endif
+" Config search
 set ignorecase
 set hlsearch
 set smartcase
+
+" Config encoding
 set encoding=utf-8
 set fileencoding=utf-8
 
@@ -19,9 +28,12 @@ autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
 
 " Highlight current line - allows you to track cursor position more easily
 set cursorline
-
-set undofile " Maintain undo history between sessions
+" Maintain undo history between sessions
+set undofile
 set undodir=~/.vim/undodir
+if filewritable("~/.vim") && ! filewritable("~/.vim/undodir")
+   silent execute '!umask 002; mkdir ~/.vim/undodir'
+endif
 
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc
@@ -94,7 +106,7 @@ autocmd BufWinLeave * call clearmatches()
 set wrap linebreak nolist
 
 set linebreak
-set autoread 
+set autoread
 set nocompatible
 colo desert
 " set title
@@ -128,7 +140,7 @@ call plug#begin('~/.vim/bundle') "Начать искать плагины в э
 "Тут будут описаны наши плагины
 Plug 'https://github.com/scrooloose/nerdtree.git' |
   \ Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'vim-airline/vim-airline' 
+Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'https://tpope.io/vim/fugitive.git'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
@@ -136,7 +148,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 call plug#end() "Перестать это делать
 
 " nerdtree
-"autocmd vimenter * NERDTree " Открывать дерево каталогов при запуске VIM           
+"autocmd vimenter * NERDTree " Открывать дерево каталогов при запуске VIM
 " Автоматически закрыть окно, если больше ничего нет
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 " -------------
@@ -144,7 +156,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 let g:airline_powerline_fonts = 0
 let g:airline_theme='deus'
 "  ----------------
-"  MAPS
 " Ctrl + G скрыть окно
 map <C-g>  :NERDTreeToggle<CR>
 " This is totally awesome - remap jj to escape in insert mode.
@@ -200,5 +211,6 @@ vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+
 
 
